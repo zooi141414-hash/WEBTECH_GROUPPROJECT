@@ -2,8 +2,8 @@
 
 เว็บแอปพลิเคชันจำลองการจัดสเปกคอมพิวเตอร์และตรวจสอบความเข้ากันได้ของฮาร์ดแวร์แบบ Real-time ขับเคลื่อนด้วยสถาปัตยกรรม Next.js App Router 
 
-- **Live Demo (Vercel):** [https://your-project.vercel.app](https://your-project.vercel.app)
-- **GitHub Repository:** [https://github.com/your-username/your-repo](https://github.com/your-username/your-repo)
+- **Live Demo (Vercel):** [https://webtech-groupproject.vercel.app/](https://webtech-groupproject.vercel.app/)
+- **GitHub Repository:** [https://github.com/zooi141414-hash/WEBTECH_GROUPPROJECT](https://github.com/zooi141414-hash/WEBTECH_GROUPPROJECT)
 
 ---
 
@@ -38,5 +38,5 @@
 
 1. Clone repository:
    ```bash
-   git clone [https://github.com/your-username/your-repo.git](https://github.com/your-username/your-repo.git)
+   git clone [https://github.com/zooi141414-hash/WEBTECH_GROUPPROJECT.git](https://github.com/zooi141414-hash/WEBTECH_GROUPPROJECT.git)
    cd pc-builder
