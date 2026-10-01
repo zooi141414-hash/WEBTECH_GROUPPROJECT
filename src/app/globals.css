@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --background: #f8fafc;
+    --foreground: #0f172a;
+    --card-bg: #ffffff;
+    --border-color: #e2e8f0;
+  }
+
+  .dark {
+    --background: #090d16;
+    --foreground: #f8fafc;
+    --card-bg: #0f172a;
+    --border-color: #1e293b;
+  }
+
+  * {
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  /* html {
+    scroll-behavior: smooth;
+  } */
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/* ========================================================
+   PRINT STYLES: FORCE LIGHT MODE & SHARP CONTRAST FOR A4
+   ======================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 6mm 8mm;
+  }
+
+  /* 1. ซ่อนทุกอย่างที่ไม่ใช่ตัวใบเสนอราคา (รวมถึง Navbar) */
+  header,
+  nav,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  /* 2. บังคับ Root และ Body ให้เป็นโหมดสว่าง 100% ไม่สนว่าเว็บเปิด Dark Theme อยู่ */
+  html,
+  body,
+  .dark {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .print-modal-container {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    display: block !important;
+    inset: auto !important;
+    width: 100% !important;
+  }
+
+  /* 3. ล้างพื้นหลังมืดของ Modal ให้เป็นสีขาวคลีน */
+  #printable-quotation {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    max-height: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    overflow: visible !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* 4. บังคับตาราง ทุกแถว ทุกคอลัมน์ ให้ตัวหนังสือดำคมชัด และพื้นหลังไม่มืด */
+  #printable-quotation * {
+    background-color: transparent !important;
+    text-shadow: none !important;
+  }
+
+  #printable-quotation table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  #printable-quotation thead tr {
+    background-color: #f1f5f9 !important;
+  }
+
+  #printable-quotation thead th {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+  }
+
+  #printable-quotation tbody tr {
+    border-bottom: 1px solid #e2e8f0 !important;
+  }
+
+  #printable-quotation tbody tr td {
+    color: #0f172a !important;
+  }
+
+  /* ชื่อสินค้าและราคาให้ดำเข้มอ่านง่าย ชัดเจน 100% */
+  #printable-quotation .part-title {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+
+  #printable-quotation .part-advice {
+    color: #475569 !important;
+  }
+
+  #printable-quotation .part-price {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+  }
+
+  /* แถบสรุปผลด้านบน */
+  #printable-quotation .stat-box {
+    background-color: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  #printable-quotation .stat-value {
+    color: #0f172a !important;
+  }
+
+  /* แถบสรุปราคารวมด้านล่างสุด */
+  #printable-quotation tfoot tr {
+    background-color: #f8fafc !important;
+    border-top: 2px solid #0f172a !important;
+  }
+
+  #printable-quotation tfoot td {
+    color: #0f172a !important;
+    font-weight: 900 !important;
+  }
+
+  #printable-quotation .total-price-text {
+    color: #0f172a !important;
+    font-weight: 900 !important;
+    font-size: 13pt !important;
+  }
+}
