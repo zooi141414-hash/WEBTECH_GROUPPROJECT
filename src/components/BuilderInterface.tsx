@@ -7,7 +7,6 @@ import { validateBuild } from '@/utils/checker';
 import { getThemeSwal } from '@/utils/swal';
 import { SpecAdvisorModal } from '@/components/SpecAdvisorModal';
 import { ComparisonModal } from '@/components/ComparisonModal';
-import Swal from 'sweetalert2';
 import { 
   Cpu, 
   CircuitBoard, 
@@ -108,8 +107,20 @@ export const BuilderInterface: React.FC = () => {
       const cachedB = localStorage.getItem('nextspec_slot_b');
       if (cachedB) {
         try {
-          setSavedBuildSlotB(JSON.parse(cachedB));
-        } catch (e) {}
+          const parsed: unknown = JSON.parse(cachedB);
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+            const savedParts = parsed as Record<string, { id?: unknown } | null>;
+            const restoredBuild = Object.fromEntries(
+              CATEGORY_ITEMS.map(({ key }) => {
+                const partId = savedParts[key]?.id;
+                return [key, PARTS_DATABASE.find((part) => part.id === partId && part.category === key) || null];
+              })
+            ) as Record<string, Part | null>;
+            setSavedBuildSlotB(restoredBuild);
+          }
+        } catch {
+          localStorage.removeItem('nextspec_slot_b');
+        }
       }
     }
   }, []);

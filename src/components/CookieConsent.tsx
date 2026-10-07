@@ -21,6 +21,7 @@ export const CookieConsent: React.FC = () => {
   };
 
   const handleDecline = () => {
+    localStorage.setItem('nextspec_cookie_accepted', 'declined');
     setShowConsent(false);
   };
 
