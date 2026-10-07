@@ -39,13 +39,54 @@
 - **Smart Budget Presets:** ระบบจัดสเปกอัตโนมัติ 1 คลิกตามระดับงบประมาณ (15K, 30K, 60K)
 - **Side-by-Side Build Comparison:** โหมดเปรียบเทียบสเปกข้างกันระหว่าง Slot A และ Slot B ผ่าน `localStorage`
 - **Official Print PDF Quotation:** เอกสารใบเสนอราคามาตรฐานทางการ ปรับแต่งด้วย CSS `@media print` ให้ออกมา 1 หน้า A4 คมชัด 100%
+- **Google OAuth Login:** ต้องเข้าสู่ระบบด้วย Google ก่อนเข้าใช้งาน PC Builder และเครื่องมือจัดสเปกทั้งหมด
 - **Enterprise UI/UX:** รองรับ Dark/Light Mode, ปรับขนาดฟอนต์ 3 ระดับ, สลับได้ 3 ภาษา (ไทย, อังกฤษ, จีน พร้อมรูปธงชาติ) และแจ้งเตือนด้วย SweetAlert2
 
 ---
 
+## 🔐 การเข้าสู่ระบบ (Google OAuth)
+
+- หน้าแรก (`/`) เปิดให้เข้าชมได้โดยไม่ต้องเข้าสู่ระบบ
+- ต้องเข้าสู่ระบบด้วย Google ก่อนใช้งานหน้า Builder (`/builder`) และเครื่องมือจัดสเปกทั้งหมด
+- ระบบใช้ NextAuth.js และไม่เก็บข้อมูลผู้ใช้ลงฐานข้อมูล
+
+### ตั้งค่าสำหรับเครื่องพัฒนา
+
+สร้างไฟล์ `.env.local` ที่ root ของโปรเจกต์ แล้วกำหนดค่าเหล่านี้:
+
+```env
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+NEXTAUTH_SECRET=your-random-secret
+NEXTAUTH_URL=http://localhost:3000
+```
+
+สร้าง `NEXTAUTH_SECRET` ได้ด้วยคำสั่ง `openssl rand -base64 32` และอย่า commit `.env.local` หรือเปิดเผย `GOOGLE_CLIENT_SECRET` ในโค้ดฝั่ง client
+
+### ตั้งค่า Google OAuth Client
+
+ใน Google Auth Platform ให้คงค่าของ localhost และเพิ่ม production URL ดังนี้:
+
+- Authorized JavaScript origin: `http://localhost:3000`
+- Authorized JavaScript origin: `https://webtech-groupproject.vercel.app`
+- Authorized redirect URI: `http://localhost:3000/api/auth/callback/google`
+- Authorized redirect URI: `https://webtech-groupproject.vercel.app/api/auth/callback/google`
+
+### ตั้งค่าบน Vercel
+
+เพิ่ม Environment Variables ใน Project Settings สำหรับ Production:
+
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `NEXTAUTH_SECRET` (ใช้ secret แบบสุ่มที่ยาวและเก็บเป็นความลับ)
+- `NEXTAUTH_URL=https://webtech-groupproject.vercel.app`
+
+หลังบันทึก Environment Variables ให้ redeploy โปรเจกต์ หาก OAuth consent screen อยู่ในสถานะ Testing ให้เพิ่ม Google accounts ที่ต้องการทดสอบไว้ใน Test users
+
+---
 ## 🛠️ เทคโนโลยีที่ใช้ (Tech Stack)
 
-- **Framework:** Next.js 15+ (App Router, Client Components, Suspense)
+- **Framework:** Next.js 16 (App Router, Client Components, Suspense)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS (Modern Glassmorphism & Print Optimization)
 - **UI Components & Icons:** Lucide React, SweetAlert2
@@ -60,6 +101,8 @@ pc-builder/
 ├── src/
 │   ├── app/
 │   │   ├── layout.tsx           # Root Layout & Global Metadata
+│   │   ├── providers.tsx        # NextAuth Session Provider
+│   │   ├── api/auth/[...nextauth]/route.ts # Google OAuth callback
 │   │   ├── globals.css          # Global CSS & Print Rules (@media print)
 │   │   ├── page.tsx             # Route: / (Landing Page)
 │   │   └── builder/
